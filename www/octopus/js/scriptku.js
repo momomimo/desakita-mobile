@@ -39,7 +39,7 @@ $(document).ready(function () {
                 } else {
                     alert("Gagal, User / Password yang Anda gunakan Salah.");
                     window.location.href =
-                        "login.html";
+                        "index.html";
                 }
             },
             error: function (xhr, Status, err) {
