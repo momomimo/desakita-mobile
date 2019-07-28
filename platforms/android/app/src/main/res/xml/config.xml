@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <name>Desakita-Mobile</name>
+    <description>
+        Aplikasi Sistem Informasi Desa berbasis Android.
+    </description>
+    <author email="mimow.aja@gmail.com" href="http://www.momomimo.id/desakita">
+        JejakDigital Mahasiswa Unisbank
+    </author>
+    <content src="login.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-intent href="market:*" />
+    <icon density="ldpi" src="www/octopus/assets/images/android/icon36.png" />
+    <icon density="mdpi" src="www/octopus/assets/images/android/icon48.png" />
+    <icon density="hdpi" src="www/octopus/assets/images/android/icon72.png" />
+    <icon density="xhdpi" src="www/octopus/assets/images/android/icon96.png" />
+    <icon density="xxdpi" src="www/octopus/assets/images/android/icon144.png" />
+    <icon density="xxxdpi" src="www/octopus/assets/images/android/icon192.png" />
+    <preference name="loglevel" value="DEBUG" />
+</widget>
