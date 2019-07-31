@@ -39,7 +39,7 @@ $(document).ready(function () {
                 } else {
                     alert("Gagal, User / Password yang Anda gunakan Salah.");
                     window.location.href =
-                        "index.html";
+                        "login.html";
                 }
             },
             error: function (xhr, Status, err) {
@@ -62,7 +62,7 @@ $(document).ready(function () {
     <span class = "role" > ` + role + ` </span>
                 `);
     $("#foto-pengguna").append(`
-    <img src="http://www.momomimo.id/desakita/assets/fp/` + foto + `" alt="` + nama + `" class="img-circle" data-lock-picture="http://www.momomimo.id/desakita/assets/fp/` + foto + `">
+    <img src="http://www.momomimo.id/desakita/assets/fp/penduduk/` + foto + `" alt="` + nama + `" class="img-circle" data-lock-picture="http://www.momomimo.id/desakita/assets/fp/penduduk/` + foto + `">
                             `);
 
     // END HOME
@@ -219,6 +219,10 @@ $(document).ready(function () {
 
     }
     // END DATA KELUARGA
+
+
+    // DATA DETAIL KELUARGA
+
     tampiltabeldetail();
 
     function tampiltabeldetail() {
@@ -261,7 +265,7 @@ $(document).ready(function () {
                                                 <div class="panel-body">
                                                     <div class="col-md-2">
                                                         <center><img
-                                                                src="http://www.momomimo.id/desakita/assets/fp/` + foto1 + `"
+                                                                src="http://www.momomimo.id/desakita/assets/fp/penduduk/` + foto1 + `"
                                                                 width="90%"></center><br>
                                                     </div>
                                                     <div class="col-md-5">
@@ -326,13 +330,152 @@ $(document).ready(function () {
 
     }
 
-    // DATA DETAIL KELUARGA
-
-
-
 
     // END DATA DETAIL KELUARGA
 
+    // Pengajuan Surat
+    tampiltabelpengajuan();
+
+    function tampiltabelpengajuan() {
+        $.ajax({
+            url: "http://www.momomimo.id/desakita-server/pengajuansurat",
+            type: "GET",
+            dataType: "JSON",
+            data: {
+                id: id
+            },
+            success: function (data) {
+                var no = 1;
+                $.each(data['data'], function (i, field) {
+                    var id_pengajuan = field.id_pengajuan;
+                    var nama_surat = field.nama_surat;
+                    var nama = field.nama;
+                    var rt_status = field.rt_status;
+                    var rw_status = field.rw_status;
+                    var desa_status = field.desa_status;
+                    var desa_status = field.desa_status;
+                    var keperluan = field.keperluan;
+                    var keterangan = field.keterangan;
+                    var status = field.status;
+                    if (rt_status == 1) {
+                        var rt_ket = `<span class="btn btn-xs btn-success ">Verified <i
+                        class="fa fa-check"></i></span>`;
+                    } else {
+                        var rt_ket = `<span class="btn btn-xs btn-danger ">Not Verified <i
+                        class="fa fa-refresh"></i></span>`;
+                    }
+                    if (rw_status == 1) {
+                        var rw_ket = `<span class="btn btn-xs btn-success ">Verified <i
+                        class="fa fa-check"></i></span>`;
+                    } else {
+                        var rw_ket = `<span class="btn btn-xs btn-danger ">Not Verified <i
+                        class="fa fa-refresh"></i></span>`;
+                    }
+                    if (desa_status == 1) {
+                        var desa_ket = `<span class="btn btn-xs btn-success ">Verified <i
+                        class="fa fa-check"></i></span>`;
+                    } else {
+                        var desa_ket = `<span class="btn btn-xs btn-danger ">Not Verified <i
+                        class="fa fa-refresh"></i></span>`;
+                    }
+                    if (status == 1) {
+                        var ket = "Menunggu RT";
+                    } else if (status == 2) {
+                        var ket = "Menunggu RW";
+                    } else if (status == 3) {
+                        var ket = "Menunggu Desa";
+                    } else if (status == 4) {
+                        var ket = "Konfirmasi Pemohon";
+                    }
+                    $("#datapengajuan").append(`
+                    <tr>
+                        <td class="text-center">` + no++ + `</td>
+                        <td>` + nama + `</td>
+                        <td>` + nama_surat + `</td>
+                        <td>` + keperluan + `</td>
+                        <td class="text-center">
+                            ` + rt_ket + `
+                        </td>
+                        <td class="text-center">
+                        ` + rw_ket + `
+                        </td>
+                        <td class="text-center">
+                        ` + desa_ket + `
+                        </td>
+                        <td class="text-center">
+                        ` + ket + `
+                        </td>
+                    </tr>
+                    `);
+                });
+                $('#tabel-pengajuan').DataTable();
+            }
+        });
+    }
+
+    tampilanform_pengajuan();
+
+    function tampilanform_pengajuan() {
+        $.ajax({
+            url: "http://www.momomimo.id/desakita-server/pengajuansurat",
+            type: "GET",
+            dataType: "JSON",
+            data: {
+                id: id
+            },
+            success: function (data) {
+                $.each(data['listsurat'], function (i, field) {
+                    var id_surat = field.id;
+                    var nama = field.nama;
+                    $("#datasurat").append(`
+                    <option value="` + id_surat + `">` + nama + `</option>
+                    `);
+                });
+                $.each(data['keluarga'], function (i, field) {
+                    var id_penduduk = field.id;
+                    var nama_penduduk = field.nama;
+                    $("#dataanggota").append(`
+                    <option value="` + id_penduduk + `">` + nama_penduduk + `</option>
+                    `);
+                });
+                var rt_kk = data['keluarga'][0]['rt'];
+                var rw_kk = data['keluarga'][0]['rw'];
+
+                $("#hidden").append(`
+                    <input type="hidden" name="rt" value="` + rt_kk + `">
+                    <input type="hidden" name="rw" value="` + rw_kk + `">
+                    `);
+            }
+        });
+    }
+    $("#btn-tambahpengajuan").click(function () {
+        var data = $("#form_pengajuan").serialize();
+        console.log(data);
+        $.ajax({
+            url: "http://www.momomimo.id/desakita-server/pengajuansurat",
+            type: "POST",
+            data: $("#form_pengajuan").serialize(),
+            dataType: "JSON",
+            success: function (result) {
+                if (result.status) {
+                    alert("Sukses, Data berhasil ditambahkan");
+                    window.location.href =
+                        "pengajuansurat.html";
+                } else {
+                    alert("Error, Data Gagal ditambahkan");
+                    window.location.href =
+                        "pengajuansurat.html";
+                }
+            },
+            error: function (xhr, Status, err) {
+                $("Data Kurang Lengkap : " + Status);
+                window.location.href =
+                    "form_pengajuan.html";
+            }
+        });
+        return false;
+    });
+    // End Pengajuan Surat
 
 
     // tampiltabeldata();
